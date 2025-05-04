@@ -1,32 +1,55 @@
 <!DOCTYPE html>
-<html>
+<html lang="ar">
 <head>
-  <title>Test</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>حاسبة الصفقة</title>
+  <style>
+    body { font-family: Arial; text-align: center; margin: 50px; direction: rtl; }
+    input { margin: 10px; padding: 8px; width: 200px; }
+    button { padding: 10px 20px; }
+    .result { margin-top: 20px; font-weight: bold; line-height: 1.8; }
+  </style>
 </head>
 <body>
-  <input id="high" placeholder="أعلى سعر" type="number"><br>
-  <input id="low" placeholder="أقل سعر" type="number"><br>
-  <input id="range" placeholder="نطاق الهدف" type="number"><br>
-  <button onclick="go()">احسب</button>
-  <div id="output"></div>
+  <h1>حاسبة الدخول والاهداف</h1>
+  <p>أدخل أعلى سعر، أقل سعر، ونطاق الهدف</p>
+
+  <input type="number" id="high" placeholder="أعلى سعر (القمة)" />
+  <input type="number" id="low" placeholder="أقل سعر (القاع)" />
+  <input type="number" id="range" placeholder="نطاق الهدف" />
+  <br>
+  <button onclick="calculate()">احسب</button>
+
+  <div class="result" id="result"></div>
 
   <script>
-    function go() {
-      let high = parseFloat(document.getElementById('high').value);
-      let low = parseFloat(document.getElementById('low').value);
-      let range = parseFloat(document.getElementById('range').value);
-      let entry = (high + low) / 2;
-      let type = high > low ? "شراء" : "بيع";
-      let dir = high > low ? 1 : -1;
-      let tp1 = entry + dir * range * 0.5;
-      let tp2 = entry + dir * range * 0.75;
-      let tp3 = entry + dir * range;
-      document.getElementById('output').innerHTML =
-        "نوع الصفقة: " + type + "<br>" +
-        "دخول: " + entry.toFixed(2) + "<br>" +
-        "TP1: " + tp1.toFixed(2) + "<br>" +
-        "TP2: " + tp2.toFixed(2) + "<br>" +
-        "TP3: " + tp3.toFixed(2);
+    function calculate() {
+      const high = parseFloat(document.getElementById('high').value);
+      const low = parseFloat(document.getElementById('low').value);
+      const range = parseFloat(document.getElementById('range').value);
+
+      if (isNaN(high) || isNaN(low) || isNaN(range)) {
+        document.getElementById('result').innerText = "يرجى إدخال القيم كلها بشكل صحيح.";
+        return;
+      }
+
+      const entry = (high + low) / 2;
+      const isBuy = high > low;
+      const tradeType = isBuy ? "شراء (Buy)" : "بيع (Sell)";
+
+      const direction = isBuy ? 1 : -1;
+      const tp1 = entry + direction * range * 0.5;
+      const tp2 = entry + direction * range * 0.75;
+      const tp3 = entry + direction * range;
+
+      document.getElementById('result').innerHTML = `
+        <div>نوع الصفقة: ${tradeType}</div>
+        <div>منطقة الدخول: ${entry.toFixed(2)}</div>
+        <div>TP1: ${tp1.toFixed(2)}</div>
+        <div>TP2: ${tp2.toFixed(2)}</div>
+        <div>TP3: ${tp3.toFixed(2)}</div>
+      `;
     }
   </script>
 </body>
