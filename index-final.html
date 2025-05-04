@@ -1,0 +1,173 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>حاسبة عباس - الذهب والبتكوين</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #e0f7ff;
+      text-align: center;
+      padding: 20px;
+    }
+    h1 {
+      color: #0077aa;
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+    .tab-buttons {
+      margin-bottom: 20px;
+    }
+    .tab-buttons button {
+      padding: 10px 20px;
+      margin: 5px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: none;
+      background-color: #0077aa;
+      color: white;
+      cursor: pointer;
+    }
+    .tab-buttons button.active {
+      background-color: #005f88;
+    }
+    .calculator {
+      display: none;
+    }
+    .calculator.active {
+      display: block;
+    }
+    input, select, button {
+      padding: 10px;
+      margin: 10px;
+      width: 250px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+    .high { background-color: #c8facc; }
+    .low { background-color: #ffc8c8; }
+    .range { background-color: #cce4ff; }
+    button {
+      background-color: #0077aa;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #005f88;
+    }
+    .result {
+      margin-top: 20px;
+      font-weight: bold;
+      font-size: 18px;
+      background: white;
+      padding: 15px;
+      border-radius: 10px;
+      display: inline-block;
+      text-align: right;
+    }
+    .copyBtn {
+      background-color: #4CAF50;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>لوغو: Abbas</h1>
+
+  <div class="tab-buttons">
+    <button class="active" onclick="showTab('gold')">الذهب</button>
+    <button onclick="showTab('btc')">البتكوين</button>
+  </div>
+
+  <!-- قسم الذهب -->
+  <div id="gold" class="calculator active">
+    <input class="high" type="number" id="gold-high" placeholder="أعلى سعر (القمة)" /><br>
+    <input class="low" type="number" id="gold-low" placeholder="أقل سعر (القاع)" /><br>
+    <input class="range" type="number" id="gold-range" placeholder="نطاق الهدف" /><br>
+    <select id="gold-timeframe">
+      <option value="M5">M5</option>
+      <option value="M15">M15</option>
+      <option value="H1">H1</option>
+      <option value="H4">H4</option>
+      <option value="D1">D1</option>
+    </select><br>
+    <select id="gold-trend">
+      <option value="up">اتجاه صاعد</option>
+      <option value="down">اتجاه هابط</option>
+    </select><br>
+    <button onclick="calculate('gold')">احسب الذهب</button>
+    <div class="result" id="gold-result"></div>
+    <button class="copyBtn" onclick="copyTargets('gold-result')">نسخ أهداف الذهب</button>
+  </div>
+
+  <!-- قسم البتكوين -->
+  <div id="btc" class="calculator">
+    <input class="high" type="number" id="btc-high" placeholder="أعلى سعر (القمة)" /><br>
+    <input class="low" type="number" id="btc-low" placeholder="أقل سعر (القاع)" /><br>
+    <input class="range" type="number" id="btc-range" placeholder="نطاق الهدف" /><br>
+    <select id="btc-timeframe">
+      <option value="M5">M5</option>
+      <option value="M15">M15</option>
+      <option value="H1">H1</option>
+      <option value="H4">H4</option>
+      <option value="D1">D1</option>
+    </select><br>
+    <select id="btc-trend">
+      <option value="up">اتجاه صاعد</option>
+      <option value="down">اتجاه هابط</option>
+    </select><br>
+    <button onclick="calculate('btc')">احسب البتكوين</button>
+    <div class="result" id="btc-result"></div>
+    <button class="copyBtn" onclick="copyTargets('btc-result')">نسخ أهداف البتكوين</button>
+  </div>
+
+  <script>
+    function showTab(tabName) {
+      document.querySelectorAll(".calculator").forEach(div => div.classList.remove("active"));
+      document.getElementById(tabName).classList.add("active");
+      document.querySelectorAll(".tab-buttons button").forEach(btn => btn.classList.remove("active"));
+      event.target.classList.add("active");
+    }
+
+    function calculate(asset) {
+      const high = parseFloat(document.getElementById(asset + "-high").value);
+      const low = parseFloat(document.getElementById(asset + "-low").value);
+      const range = parseFloat(document.getElementById(asset + "-range").value);
+      const trend = document.getElementById(asset + "-trend").value;
+      const timeframe = document.getElementById(asset + "-timeframe").value;
+
+      if (isNaN(high) || isNaN(low) || isNaN(range)) {
+        document.getElementById(asset + "-result").innerText = "يرجى إدخال كل القيم.";
+        return;
+      }
+
+      const entry = (high + low) / 2;
+      const isBuy = trend === "up";
+      const type = isBuy ? "شراء" : "بيع";
+      const dir = isBuy ? 1 : -1;
+
+      const tp1 = entry + dir * range * 0.5;
+      const tp2 = entry + dir * range * 0.75;
+      const tp3 = entry + dir * range;
+
+      document.getElementById(asset + "-result").innerHTML =
+        `الفريم: ${timeframe}<br>` +
+        `نوع الصفقة: ${type}<br>` +
+        `منطقة الدخول: ${entry.toFixed(2)}<br>` +
+        `TP1: ${tp1.toFixed(2)}<br>` +
+        `TP2: ${tp2.toFixed(2)}<br>` +
+        `TP3: ${tp3.toFixed(2)}`;
+    }
+
+    function copyTargets(resultId) {
+      const resultText = document.getElementById(resultId).innerText;
+      if (!resultText) return;
+      navigator.clipboard.writeText(resultText).then(() => {
+        alert("تم نسخ الأهداف!");
+      });
+    }
+  </script>
+</body>
+</html>
