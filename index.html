@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>حاسبة نقاط الدخول</title>
+  <style>
+    body {
+      font-family: Arial;
+      background-color: #0a1b2b;
+      color: white;
+      text-align: center;
+      padding: 30px;
+    }
+    input, select, button {
+      padding: 10px;
+      margin: 10px;
+      font-size: 16px;
+    }
+    .result {
+      margin-top: 20px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+  <h2>IQFX - حاسبة نقاط الدخول</h2>
+  <input type="number" id="price1" placeholder="السعر الأول"><br>
+  <input type="number" id="price2" placeholder="السعر الثاني"><br>
+  <select id="direction">
+    <option value="down">هابط</option>
+    <option value="up">صاعد</option>
+  </select><br>
+  <button onclick="calculate()">احسب</button>
+  <div class="result" id="results"></div>
+
+  <script>
+    function calculate() {
+      const price1 = parseFloat(document.getElementById("price1").value);
+      const price2 = parseFloat(document.getElementById("price2").value);
+      const direction = document.getElementById("direction").value;
+
+      if (isNaN(price1) || isNaN(price2)) {
+        alert("رجاءً أدخل السعرين بشكل صحيح.");
+        return;
+      }
+
+      const diff = Math.abs(price2 - price1);
+      let entry1, entry2;
+
+      if (direction === "down") {
+        entry1 = price2 - diff * 0.382;
+        entry2 = price2 - diff * 0.618;
+      } else {
+        entry1 = price2 + diff * 0.382;
+        entry2 = price2 + diff * 0.618;
+      }
+
+      document.getElementById("results").innerHTML = `
+        <p>ENTRY: ${entry1.toFixed(2)}</p>
+        <p>ENTRY: ${entry2.toFixed(2)}</p>
+      `;
+    }
+  </script>
+</body>
+</html>
