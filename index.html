@@ -1,25 +1,71 @@
+
 <!DOCTYPE html>
-<html>
+<html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <title>حاسبة الاتجاه</title>
+  <title>حاسبة عباس</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #e0f7ff;
+      text-align: center;
+      padding: 20px;
+    }
+    h1 {
+      color: #0077aa;
+      font-size: 32px;
+      margin-bottom: 20px;
+    }
+    input, select, button {
+      padding: 10px;
+      margin: 10px;
+      width: 250px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+    #high { background-color: #c8facc; }
+    #low { background-color: #ffc8c8; }
+    #range { background-color: #cce4ff; }
+    button {
+      background-color: #0077aa;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #005f88;
+    }
+    .result {
+      margin-top: 20px;
+      font-weight: bold;
+      font-size: 18px;
+      background: white;
+      padding: 15px;
+      border-radius: 10px;
+      display: inline-block;
+      text-align: right;
+    }
+    #copyBtn {
+      background-color: #4CAF50;
+      margin-top: 10px;
+    }
+  </style>
 </head>
-<body style="text-align:center; direction:rtl; font-family:Arial; margin-top:40px;">
-  <h2>حاسبة الدخول والأهداف</h2>
+<body>
+  <h1>لوغو: Abbas</h1>
+  <input id="high" type="number" placeholder="أعلى سعر (القمة)" /><br>
+  <input id="low" type="number" placeholder="أقل سعر (القاع)" /><br>
+  <input id="range" type="number" placeholder="نطاق الهدف" /><br>
 
-  <input id="high" type="number" placeholder="أعلى سعر (القمة)" /><br><br>
-  <input id="low" type="number" placeholder="أقل سعر (القاع)" /><br><br>
-  <input id="range" type="number" placeholder="نطاق الهدف" /><br><br>
-
-  <label>حدد الاتجاه:</label><br>
   <select id="trend">
-    <option value="up">صاعد</option>
-    <option value="down">هابط</option>
-  </select><br><br>
+    <option value="up">اتجاه صاعد</option>
+    <option value="down">اتجاه هابط</option>
+  </select><br>
 
   <button onclick="calculate()">احسب</button>
 
-  <div id="result" style="margin-top:20px; font-weight:bold;"></div>
+  <div class="result" id="result"></div>
+  <button id="copyBtn" onclick="copyTargets()">نسخ الأهداف</button>
 
   <script>
     function calculate() {
@@ -44,10 +90,18 @@
 
       document.getElementById("result").innerHTML =
         `نوع الصفقة: ${type}<br>` +
-        `الدخول: ${entry.toFixed(2)}<br>` +
+        `منطقة الدخول: ${entry.toFixed(2)}<br>` +
         `TP1: ${tp1.toFixed(2)}<br>` +
         `TP2: ${tp2.toFixed(2)}<br>` +
         `TP3: ${tp3.toFixed(2)}`;
+    }
+
+    function copyTargets() {
+      const resultText = document.getElementById("result").innerText;
+      if (!resultText) return;
+      navigator.clipboard.writeText(resultText).then(() => {
+        alert("تم نسخ الأهداف!");
+      });
     }
   </script>
 </body>
