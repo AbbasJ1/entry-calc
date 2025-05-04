@@ -8,30 +8,43 @@
     body { font-family: Arial; text-align: center; margin: 50px; }
     input { margin: 10px; padding: 8px; width: 200px; }
     button { padding: 10px 20px; }
-    .result { margin-top: 20px; font-weight: bold; }
+    .result { margin-top: 20px; font-weight: bold; line-height: 1.6; }
   </style>
 </head>
 <body>
   <h1>Entry Point Calculator</h1>
-  <p>أدخل السعر الحالي ونسبة التصحيح لحساب نقطة الدخول</p>
+  <p>أدخل السعر الحالي ونسبة التصحيح والهدف لحساب نقطة الدخول والأهداف</p>
 
-  <input type="number" id="price" placeholder="Current Price" />
-  <input type="number" id="percentage" placeholder="Retrace % (مثلاً 38.2)" />
+  <input type="number" id="price" placeholder="السعر الحالي" />
+  <input type="number" id="retracement" placeholder="نسبة التصحيح (مثلاً 38.2)" />
+  <input type="number" id="tpRange" placeholder="نطاق الهدف (مثلاً 50)" />
   <br>
-  <button onclick="calculate()">Calculate Entry</button>
+  <button onclick="calculate()">احسب</button>
 
   <div class="result" id="result"></div>
 
   <script>
     function calculate() {
       const price = parseFloat(document.getElementById('price').value);
-      const percent = parseFloat(document.getElementById('percentage').value);
-      if (isNaN(price) || isNaN(percent)) {
-        document.getElementById('result').innerText = "يرجى إدخال قيم صحيحة.";
+      const retracement = parseFloat(document.getElementById('retracement').value);
+      const tpRange = parseFloat(document.getElementById('tpRange').value);
+
+      if (isNaN(price) || isNaN(retracement) || isNaN(tpRange)) {
+        document.getElementById('result').innerText = "يرجى إدخال كل القيم بشكل صحيح.";
         return;
       }
-      const entry = price - (price * percent / 100);
-      document.getElementById('result').innerText = "نقطة الدخول: " + entry.toFixed(2);
+
+      const entry = price - (price * retracement / 100);
+      const tp1 = entry + tpRange * 0.5;
+      const tp2 = entry + tpRange * 0.75;
+      const tp3 = entry + tpRange;
+
+      document.getElementById('result').innerHTML = `
+        <div>منطقة الدخول: ${entry.toFixed(2)}</div>
+        <div>TP1: ${tp1.toFixed(2)}</div>
+        <div>TP2: ${tp2.toFixed(2)}</div>
+        <div>TP3: ${tp3.toFixed(2)}</div>
+      `;
     }
   </script>
 </body>
