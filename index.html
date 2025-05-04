@@ -1,64 +1,37 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>حاسبة نقاط الدخول</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Entry Point Calculator</title>
   <style>
-    body {
-      font-family: Arial;
-      background-color: #0a1b2b;
-      color: white;
-      text-align: center;
-      padding: 30px;
-    }
-    input, select, button {
-      padding: 10px;
-      margin: 10px;
-      font-size: 16px;
-    }
-    .result {
-      margin-top: 20px;
-      font-size: 18px;
-    }
+    body { font-family: Arial; text-align: center; margin: 50px; }
+    input { margin: 10px; padding: 8px; width: 200px; }
+    button { padding: 10px 20px; }
+    .result { margin-top: 20px; font-weight: bold; }
   </style>
 </head>
 <body>
-  <h2>IQFX - حاسبة نقاط الدخول</h2>
-  <input type="number" id="price1" placeholder="السعر الأول"><br>
-  <input type="number" id="price2" placeholder="السعر الثاني"><br>
-  <select id="direction">
-    <option value="down">هابط</option>
-    <option value="up">صاعد</option>
-  </select><br>
-  <button onclick="calculate()">احسب</button>
-  <div class="result" id="results"></div>
+  <h1>Entry Point Calculator</h1>
+  <p>أدخل السعر الحالي ونسبة التصحيح لحساب نقطة الدخول</p>
+
+  <input type="number" id="price" placeholder="Current Price" />
+  <input type="number" id="percentage" placeholder="Retrace % (مثلاً 38.2)" />
+  <br>
+  <button onclick="calculate()">Calculate Entry</button>
+
+  <div class="result" id="result"></div>
 
   <script>
     function calculate() {
-      const price1 = parseFloat(document.getElementById("price1").value);
-      const price2 = parseFloat(document.getElementById("price2").value);
-      const direction = document.getElementById("direction").value;
-
-      if (isNaN(price1) || isNaN(price2)) {
-        alert("رجاءً أدخل السعرين بشكل صحيح.");
+      const price = parseFloat(document.getElementById('price').value);
+      const percent = parseFloat(document.getElementById('percentage').value);
+      if (isNaN(price) || isNaN(percent)) {
+        document.getElementById('result').innerText = "يرجى إدخال قيم صحيحة.";
         return;
       }
-
-      const diff = Math.abs(price2 - price1);
-      let entry1, entry2;
-
-      if (direction === "down") {
-        entry1 = price2 - diff * 0.382;
-        entry2 = price2 - diff * 0.618;
-      } else {
-        entry1 = price2 + diff * 0.382;
-        entry2 = price2 + diff * 0.618;
-      }
-
-      document.getElementById("results").innerHTML = `
-        <p>ENTRY: ${entry1.toFixed(2)}</p>
-        <p>ENTRY: ${entry2.toFixed(2)}</p>
-      `;
+      const entry = price - (price * percent / 100);
+      document.getElementById('result').innerText = "نقطة الدخول: " + entry.toFixed(2);
     }
   </script>
 </body>
