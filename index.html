@@ -13,10 +13,9 @@
 </head>
 <body>
   <h1>Entry Point Calculator</h1>
-  <p>أدخل السعر الحالي ونسبة التصحيح والهدف لحساب نقطة الدخول والأهداف</p>
+  <p>أدخل السعر الحالي ونطاق الأهداف</p>
 
   <input type="number" id="price" placeholder="السعر الحالي" />
-  <input type="number" id="retracement" placeholder="نسبة التصحيح (مثلاً 38.2)" />
   <input type="number" id="tpRange" placeholder="نطاق الهدف (مثلاً 50)" />
   <br>
   <button onclick="calculate()">احسب</button>
@@ -26,21 +25,19 @@
   <script>
     function calculate() {
       const price = parseFloat(document.getElementById('price').value);
-      const retracement = parseFloat(document.getElementById('retracement').value);
       const tpRange = parseFloat(document.getElementById('tpRange').value);
 
-      if (isNaN(price) || isNaN(retracement) || isNaN(tpRange)) {
-        document.getElementById('result').innerText = "يرجى إدخال كل القيم بشكل صحيح.";
+      if (isNaN(price) || isNaN(tpRange)) {
+        document.getElementById('result').innerText = "يرجى إدخال القيم بشكل صحيح.";
         return;
       }
 
-      const entry = price - (price * retracement / 100);
-      const tp1 = entry + tpRange * 0.5;
-      const tp2 = entry + tpRange * 0.75;
-      const tp3 = entry + tpRange;
+      const tp1 = price + tpRange * 0.5;
+      const tp2 = price + tpRange * 0.75;
+      const tp3 = price + tpRange;
 
       document.getElementById('result').innerHTML = `
-        <div>منطقة الدخول: ${entry.toFixed(2)}</div>
+        <div>منطقة الدخول: ${price.toFixed(2)}</div>
         <div>TP1: ${tp1.toFixed(2)}</div>
         <div>TP2: ${tp2.toFixed(2)}</div>
         <div>TP3: ${tp3.toFixed(2)}</div>
