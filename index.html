@@ -36,11 +36,7 @@
       const tp2 = price + tpRange * 0.75;
       const tp3 = price + tpRange;
 
-      const isBuy = tp3 > price;
-      const tradeType = isBuy ? "شراء (Buy)" : "بيع (Sell)";
-
       document.getElementById('result').innerHTML = `
-        <div>نوع الصفقة: ${tradeType}</div>
         <div>منطقة الدخول: ${price.toFixed(2)}</div>
         <div>TP1: ${tp1.toFixed(2)}</div>
         <div>TP2: ${tp2.toFixed(2)}</div>
