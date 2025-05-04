@@ -1,52 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Entry Point Calculator</title>
-  <style>
-    body { font-family: Arial; text-align: center; margin: 50px; }
-    input { margin: 10px; padding: 8px; width: 200px; }
-    button { padding: 10px 20px; }
-    .result { margin-top: 20px; font-weight: bold; line-height: 1.6; }
-  </style>
-</head>
-<body>
-  <h1>Entry Point Calculator</h1>
-  <p>أدخل السعر الحالي ونطاق الأهداف</p>
+<script>
+  function calculate() {
+    const price = parseFloat(document.getElementById('price').value);
+    const tpRange = parseFloat(document.getElementById('tpRange').value);
 
-  <input type="number" id="price" placeholder="السعر الحالي" />
-  <input type="number" id="tpRange" placeholder="نطاق الهدف (مثلاً 50)" />
-  <br>
-  <button onclick="calculate()">احسب</button>
-
-  <div class="result" id="result"></div>
-
-  <script>
-    function calculate() {
-      const price = parseFloat(document.getElementById('price').value);
-      const tpRange = parseFloat(document.getElementById('tpRange').value);
-
-      if (isNaN(price) || isNaN(tpRange)) {
-        document.getElementById('result').innerText = "يرجى إدخال القيم بشكل صحيح.";
-        return;
-      }
-
-      const tp1 = price + tpRange * 0.5;
-      const tp2 = price + tpRange * 0.75;
-      const tp3 = price + tpRange;
-
-      const isBuy = tp3 > price;
-      const tradeType = isBuy ? "شراء (Buy)" : "بيع (Sell)";
-
-      document.getElementById('result').innerHTML = `
-        <div>نوع الصفقة: ${tradeType}</div>
-        <div>منطقة الدخول: ${price.toFixed(2)}</div>
-        <div>TP1: ${tp1.toFixed(2)}</div>
-        <div>TP2: ${tp2.toFixed(2)}</div>
-        <div>TP3: ${tp3.toFixed(2)}</div>
-      `;
+    if (isNaN(price) || isNaN(tpRange)) {
+      document.getElementById('result').innerText = "يرجى إدخال القيم بشكل صحيح.";
+      return;
     }
-  </script>
-</body>
-</html>
+
+    const tp1 = price + tpRange * 0.5;
+    const tp2 = price + tpRange * 0.75;
+    const tp3 = price + tpRange;
+
+    const tradeType = tpRange > 0 ? "شراء (Buy)" : "بيع (Sell)";
+
+    document.getElementById('result').innerHTML = `
+      <div>نوع الصفقة: ${tradeType}</div>
+      <div>منطقة الدخول: ${price.toFixed(2)}</div>
+      <div>TP1: ${tp1.toFixed(2)}</div>
+      <div>TP2: ${tp2.toFixed(2)}</div>
+      <div>TP3: ${tp3.toFixed(2)}</div>
+    `;
+  }
+</script>
