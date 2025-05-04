@@ -1,63 +1,53 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>حاسبة الصفقات</title>
-  <style>
-    body { font-family: Arial; text-align: center; margin: 50px; direction: rtl; }
-    input, select { margin: 10px; padding: 8px; width: 220px; }
-    button { padding: 10px 20px; }
-    .result { margin-top: 20px; font-weight: bold; line-height: 1.8; }
-  </style>
+  <meta charset="UTF-8">
+  <title>حاسبة الاتجاه</title>
 </head>
-<body>
-  <h1>حاسبة الدخول والأهداف</h1>
-  <p>أدخل القمة، القاع، نطاق الهدف، وحدد الاتجاه</p>
+<body style="text-align:center; direction:rtl; font-family:Arial; margin-top:40px;">
+  <h2>حاسبة الدخول والأهداف</h2>
 
-  <input type="number" id="high" placeholder="أعلى سعر (القمة)" />
-  <input type="number" id="low" placeholder="أقل سعر (القاع)" />
-  <input type="number" id="range" placeholder="نطاق الهدف (مثلاً 50)" />
+  <input id="high" type="number" placeholder="أعلى سعر (القمة)" /><br><br>
+  <input id="low" type="number" placeholder="أقل سعر (القاع)" /><br><br>
+  <input id="range" type="number" placeholder="نطاق الهدف" /><br><br>
 
-  <br>
+  <label>حدد الاتجاه:</label><br>
   <select id="trend">
-    <option value="up">اتجاه صاعد</option>
-    <option value="down">اتجاه هابط</option>
-  </select>
+    <option value="up">صاعد</option>
+    <option value="down">هابط</option>
+  </select><br><br>
 
-  <br>
   <button onclick="calculate()">احسب</button>
 
-  <div class="result" id="result"></div>
+  <div id="result" style="margin-top:20px; font-weight:bold;"></div>
 
   <script>
     function calculate() {
-      const high = parseFloat(document.getElementById('high').value);
-      const low = parseFloat(document.getElementById('low').value);
-      const range = parseFloat(document.getElementById('range').value);
-      const trend = document.getElementById('trend').value;
+      const high = parseFloat(document.getElementById("high").value);
+      const low = parseFloat(document.getElementById("low").value);
+      const range = parseFloat(document.getElementById("range").value);
+      const trend = document.getElementById("trend").value;
 
       if (isNaN(high) || isNaN(low) || isNaN(range)) {
-        document.getElementById('result').innerText = "يرجى إدخال القيم كلها بشكل صحيح.";
+        document.getElementById("result").innerText = "يرجى إدخال كل القيم.";
         return;
       }
 
       const entry = (high + low) / 2;
       const isBuy = trend === "up";
-      const tradeType = isBuy ? "شراء (Buy)" : "بيع (Sell)";
-      const direction = isBuy ? 1 : -1;
+      const type = isBuy ? "شراء" : "بيع";
+      const dir = isBuy ? 1 : -1;
 
-      const tp1 = entry + direction * range * 0.5;
-      const tp2 = entry + direction * range * 0.75;
-      const tp3 = entry + direction * range;
+      const tp1 = entry + dir * range * 0.5;
+      const tp2 = entry + dir * range * 0.75;
+      const tp3 = entry + dir * range;
 
-      document.getElementById('result').innerHTML = `
-        <div>نوع الصفقة: ${tradeType}</div>
-        <div>منطقة الدخول: ${entry.toFixed(2)}</div>
-        <div>TP1: ${tp1.toFixed(2)}</div>
-        <div>TP2: ${tp2.toFixed(2)}</div>
-        <div>TP3: ${tp3.toFixed(2)}</div>
-      `;
+      document.getElementById("result").innerHTML =
+        `نوع الصفقة: ${type}<br>` +
+        `الدخول: ${entry.toFixed(2)}<br>` +
+        `TP1: ${tp1.toFixed(2)}<br>` +
+        `TP2: ${tp2.toFixed(2)}<br>` +
+        `TP3: ${tp3.toFixed(2)}`;
     }
   </script>
 </body>
